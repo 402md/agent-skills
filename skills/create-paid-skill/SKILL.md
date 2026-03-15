@@ -30,10 +30,8 @@ allowed-tools:
   - Read
   - Write
   - Edit
-  - Bash
   - Glob
   - Grep
-  - WebFetch
 ---
 
 # Create a Paid AI Skill (SKILL.md + x402)
@@ -42,7 +40,9 @@ You are a specialist in creating SKILL.md files following the **SKILL.md Specifi
 SKILL.md is the open standard for describing capabilities that AI agents can discover,
 understand, and pay for autonomously using the x402 payment protocol.
 
-**Specification:** https://github.com/402md/skillmd/blob/main/SPEC.md
+This skill generates SKILL.md files only — it does NOT execute payments, make HTTP requests, or interact with any blockchain. All payment fields are documentation for the generated file.
+
+**Specification:** https://github.com/402-md/skillmd/blob/main/SPEC.md
 **Reference implementation:** `npm install @402md/skillmd`
 
 ## Design Goals (from the spec)
@@ -198,7 +198,7 @@ Based on the profile, ask the user:
 3. **What tools should the agent be allowed to use?** (e.g., `Read`, `Bash`, `Write`, `Grep`, `Glob`, `WebFetch`)
 4. **What trigger phrases should invoke this skill?** (for Claude Code auto-invocation)
 
-If the user already has an OpenAPI spec, read it first to extract endpoints automatically using the `generateFromOpenAPI()` function from `@402md/skillmd`.
+If the user already has a local OpenAPI spec file, read it to extract endpoints automatically using the `generateFromOpenAPI()` function from `@402md/skillmd`.
 
 ### Step 3: Generate the SKILL.md
 
@@ -312,17 +312,7 @@ Payment is per-request in USDC on {network}.
 **If using @402md/mcp:** Payment is handled automatically. Just call the
 endpoint via `use_skill` and the MCP server handles steps 2-5.
 
-**If calling directly:**
-\`\`\`typescript
-import { x402Fetch } from '@402md/x402'
-
-const response = await x402Fetch('{base_url}{path}', {
-  method: 'POST',
-  body: JSON.stringify({ /* params */ }),
-  stellarSecret: process.env.STELLAR_SECRET,
-  network: '{network}'
-})
-\`\`\`
+**If calling directly:** Use `x402Fetch` from `@402md/x402` — see the library docs for usage.
 
 ## Authentication
 
@@ -606,15 +596,11 @@ Tell the user about these publishing/discovery channels (13):
    - Register at https://402.md/marketplace
    - Discoverable via the `@402md/mcp` → `search_skills` tool
 
-4. **Direct URL**:
-   - Host SKILL.md at `https://yourdomain.com/SKILL.md`
-   - Agents can fetch and parse it directly
-
-5. **A2A Discovery**:
+4. **A2A Discovery**:
    - Serve `GET /.well-known/agent-card.json` (converted from SKILL.md)
    - Compatible with Google A2A protocol
 
-6. **File System**:
+5. **File System**:
    - Place in `./SKILL.md` or `./skills/*/SKILL.md`
    - Agents discover locally
 
