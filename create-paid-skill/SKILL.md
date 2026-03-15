@@ -42,7 +42,7 @@ You are a specialist in creating SKILL.md files following the **SKILL.md Specifi
 SKILL.md is the open standard for describing capabilities that AI agents can discover,
 understand, and pay for autonomously using the x402 payment protocol.
 
-**Specification:** https://github.com/402-md/skillmd/blob/main/SPEC.md
+**Specification:** https://github.com/402md/skillmd/blob/main/SPEC.md
 **Reference implementation:** `npm install @402md/skillmd`
 
 ## Design Goals (from the spec)
